@@ -28,7 +28,7 @@ $lastmoddate = '';//getLastModDate($pid, $db, $dbhost);
 //ldapOrganizationsTest($pid, $db, $dbhost);
 	
 		//L�ser in be_groupsArray
-//$be_groupsArray = getBe_groupsArray($db, $dbhost);
+$be_groupsArray = getBe_groupsArray($db, $dbhost);
 	//	$perms_groupid = $be_groupsArray[$departmentnumber];
 	
 ldapOrganizations($pid, $db, $dbhost, $be_groupsArray, $admin_userid, $site_admin_usergroupid);
@@ -405,18 +405,28 @@ function getFegroupUid($departmentnumber, $db, $dbhost) {
 	return $uid;
 }
 
-function getBe_groupsArray($db, $dbhost) {
+function getBe_groupsArray($db, $dbhost)
+{
 	$conn = mysql_connect($dbhost, "fe_user_update", "ibi124Co") or die("285; ".mysql_error());
 	$databas = mysql_select_db($db);
-	$sql = "SELECT uid, tx_institutioner_lucatid FROM be_groups WHERE deleted=0 and tx_institutioner_lucatid != ''";
-	$result = mysql_query($sql) or die("327: ".mysql_error());
+	$sql = "SELECT B.uid AS be_userUid, P.uid AS pagesUid FROM be_groups B LEFT JOIN sys_notes N ON B.tx_institutioner_lucatid = N.message LEFT JOIN pages P ON N.pid = P.uid WHERE B.deleted=0 and B.tx_institutioner_lucatid != '' AND N.message!=''";
+	$result = mysql_query($sql) or die("413: ".mysql_error());
 	while($row = mysql_fetch_array($result)) {
-		$uid = $row["uid"];
-		$tx_institutioner_lucatid = $row["tx_institutioner_lucatid"];
-		$be_groupsArray[$uid] = $tx_institutioner_lucatid;
+		$be_userUid = $row["be_userUid"];
+		$pagesUid = $row["pagesUid"];
+		if($uid) {
+		    updateBegroups($be_userUid,$pagesUid);
+		}
 	}
 	mysql_close($conn);
 	return $be_groupsArray;	
+}
+
+function updateBegroups($be_userUid,$pagesUid)
+{
+    $sql = "UPDATE be_groups SET db_mountpoints=CONCAT(db_mountpoints,',',$pagesUid) WHERE uid = ".intval($be_userUid);
+	//print $sql . "\n";
+    mysql_unbuffered_query($sql) or die("429: " . mysql_error().$sql);
 }
 
 function cleanChar($input)
