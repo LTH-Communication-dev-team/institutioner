@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<type>module</type>
+		<description>Language labels for plugin &quot;tx_institutioner_pi1&quot;</description>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="building">Building</label>
+			<label index="departments">Departments</label>
+			<label index="persons">Persons</label>
+			<label index="buildings">Buildings</label>
+			<label index="search">Search</label>
+			<label index="registeredaddress">Registered Address</label>
+			<label index="homepage">Homepage</label>
+			<label index="listofpersonel">List of personel</label>
+			<label index="largemap">Klick to show large map</label>
+			<label index="publications">Publications</label>
+			<label index="back">Back</label>
+			<label index="to">to</label>
+			<label index="of">of</label>
+			<label index="entriesfromlup">Entries from LUP</label>
+			<label index="author">Author</label>
+			<label index="genre">Genre</label>
+			<label index="year">Year</label>
+			<label index="fulltext">Full Text</label>
+			<label index="searchHere">Search Here</label>
+			<label index="results">Results</label>
+			<label index="hits">hits</label>
+			<label index="telephoneList">Telephone&#160;list</label>
+			<label index="personalHomepage">Personal Homepage</label>
+			<label index="listofpersonelhouse">List of personel working in the building</label>
+			<label index="telephoneListFor">Telephone-list for</label>
+			<label index="export">Export</label>
+			<label index="chooseFormat">Choose Format</label>
+			<label index="more_search">More search options</label>
+			<label index="dep_only">Just departments</label>
+			<label index="title_search">Search titles</label>
+			<label index="personal_web">Personal homepage</label>
+			<label index="with_publications">with publications from LUP</label>
+			<label index="journal">Journal</label>
+			<label index="page">Page</label>
+			<label index="volume">Volume</label>
+			<label index="issue">Issue</label>
+			<label index="publicDefence">Public Defence</label>
+			<label index="comingDissertations">Coming dissertations</label>
+			<label index="searchHere">Search here</label>
+			<label index="result">Result</label>
+			<label index="and">and</label>
+			<label index="entry">entry</label>
+			<label index="restrictedAccess">Restricted Access for users outside Lund University</label>
+			<label index="researchGroup">Research Group</label>
+			<label index="hits_per_page">hits/page</label>
+			<label index="export_bibtex">Export bibtex</label>
+			<label index="select_all">Select all</label>
+			<label index="sort_on">Sort on</label>
+			<label index="conference">Conference</label>
+                        <label index="name">Name</label>
+                        <label index="title">Title</label>
+                        <label index="alphabetic_order">Alphabetic Order</label>
+                        <label index="category_order">Category Order</label>
+		</languageKey>
+		<languageKey index="se" type="array">
+			<label index="building">Byggnad</label>
+			<label index="departments">Institutioner</label>
+			<label index="persons">Personer</label>
+			<label index="buildings">Byggnader</label>
+			<label index="search">Sök</label>
+			<label index="registeredaddress">Hämtställe</label>
+			<label index="homepage">Hemsida</label>
+			<label index="listofpersonel">Personallista</label>
+			<label index="largemap">Klicka för att visa stor karta</label>
+			<label index="publications">Forskningspublikationer</label>
+			<label index="back">Tillbaka</label>
+			<label index="to">till</label>
+			<label index="of">av</label>
+			<label index="entriesfromlup">poster ur LUP</label>
+			<label index="author">Författare</label>
+			<label index="genre">Genre</label>
+			<label index="year">År</label>
+			<label index="fulltext">Fulltext</label>
+			<label index="searchHere">Sök här</label>
+			<label index="results">Resultat</label>
+			<label index="hits">träffar</label>
+			<label index="telephoneList">Telefonlista</label>
+			<label index="personalHomepage">Personlig hemsida</label>
+			<label index="listofpersonelhouse">Lista på personal som arbetar i byggnaden</label>
+			<label index="telephoneListFor">Telefonlista för</label>
+			<label index="export">Exportera</label>
+			<label index="chooseFormat">Välj format</label>
+			<label index="more_search">Fler sökmöjligheter</label>
+			<label index="dep_only">Endast institutioner</label>
+			<label index="title_search">Sök tjänstebenämningar</label>
+			<label index="personal_web">Personlig hemsida</label>
+			<label index="with_publications">med publikationer från LUP</label>
+			<label index="journal">Tidskrift</label>
+			<label index="page">Sida</label>
+			<label index="volume">Volym</label>
+			<label index="issue">Nr</label>
+			<label index="publicDefence">Disputation</label>
+			<label index="comingDissertations">Kommande avhandlingar</label>
+			<label index="searchHere">Sök här</label>
+			<label index="result">Resultat</label>
+			<label index="and">och</label>
+			<label index="entry">post</label>
+			<label index="restrictedAccess">Begränsad tillgång för användare utanför Lunds universitet</label>
+			<label index="researchGroup">Forskargrupp</label>
+			<label index="hits_per_page">träffar/sida</label>
+			<label index="export_bibtex">Exportera bibtex</label>
+			<label index="select_all">Välj alla</label>
+			<label index="sort_on">Sortera på</label>
+			<label index="conference">Konferens</label>
+                        <label index="name">Namn</label>
+                        <label index="title">Titel</label>
+                        <label index="alphabetic_order">Bokstavsordning</label>
+                        <label index="category_order">Kategoriordning</label>
+		</languageKey>		
+	</data>
+</T3locallang>

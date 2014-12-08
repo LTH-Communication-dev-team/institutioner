@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<type>database</type>
+		<description>Language labels for database tables/fields belonging to extension 'institutioner'</description>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="tx_institutioner_institution">Institution</label>
+			<label index="tx_institutioner_institution.iid">iid</label>
+			<label index="tx_institutioner_institution.hid">hid</label>
+			<label index="tx_institutioner_institution.title">Title</label>
+			<label index="tx_institutioner_institution.title_e">title_e</label>
+			<label index="tx_institutioner_institution.webbadress">webaddress</label>
+			<label index="tx_institutioner_institution.webadress_e">webbaddress_e</label>
+			<label index="tx_institutioner_institution.lucatid">lucatid</label>
+			<label index="tx_institutioner_institution.telefon">telefon</label>
+			<label index="tx_institutioner_institution.ladok_kod">ladok_kod</label>
+			<label index="tx_institutioner_institution.dont_show">dont_show</label>
+			<label index="tx_institutioner_hus">hus</label>
+			<label index="tx_institutioner_hus.title">title</label>
+			<label index="tx_institutioner_hus.title_e">title_e</label>
+			<label index="tx_institutioner_hus.adress">address</label>
+			<label index="tx_institutioner_hus.hs">Hamtstalle</label>
+			<label index="tx_institutioner_hus.webbadress">webaddress</label>
+			<label index="tx_institutioner_hus.webbaddress_e">webaddress_e</label>
+			<label index="tx_institutioner_hus.husid">husid</label>
+			<label index="tx_institutioner_hus.image">image</label>
+			<label index="tx_institutioner_hus.map">map</label>
+			<label index="tt_content.list_type_pi1">Institutioner</label>
+			<label index="tt_content.list_type_pi2">User Redirect</label>
+			<label index="fe_groups.tx_institutioner_lucatid">lucatid</label>
+			<label index="fe_groups.tx_institutioner_title_eng">title_eng</label>
+			<label index="fe_users.tx_institutioner_lth_search">lth_search</label>
+			<label index="be_groups.tx_institutioner_lucatid">lucatid</label>
+		</languageKey>
+	</data>
+</T3locallang>

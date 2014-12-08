@@ -1,0 +1,26 @@
+<T3DataStructure>
+ <meta>
+       <langDisable>1</langDisable>
+ </meta>
+<sheets>
+  <sDEF>
+   <ROOT>
+    <TCEforms>
+     <sheetTitle>General</sheetTitle>
+    </TCEforms>
+    <type>array</type>
+<el>
+<directory>
+<TCEforms>
+<label>Sökväg till hemsidor</label>
+<config>
+<type>input</type>
+<size>50</size>
+</config>
+</TCEforms>
+</directory>
+</el>
+</ROOT>
+</sDEF>
+</sheets>
+</T3DataStructure>
