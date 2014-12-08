@@ -8,6 +8,7 @@
 
 class user_sampleflex_addFieldsToFlexForm {
     function addCustomCategories ($config) {
+	//WHAT!
         $sys_language_uid = $config['row']['sys_language_uid'];
         if($sys_language_uid==0) {
             $sys_language = 'sv';
