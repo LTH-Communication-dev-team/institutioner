@@ -6,7 +6,7 @@ set_time_limit(0);
 
 $admin_userid = 1;
 $site_admin_usergroupid = 104;
-//WHAT is this?!!!
+//WHAT is this?!
 
 //ldapOrganizations("departmentNumber=000006000,ou=Organizations,dc=lu,dc=se");
 //ldapOrganizations("departmentNumber=000007000,departmentNumber=000006100,ou=Organizations,dc=lu,dc=se");
