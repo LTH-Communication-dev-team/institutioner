@@ -28,12 +28,14 @@ $lastmoddate = '';//getLastModDate($pid, $db, $dbhost);
 //ldapOrganizationsTest($pid, $db, $dbhost);
 	
 		//L�ser in be_groupsArray
-$be_groupsArray = getBe_groupsArray($db, $dbhost);
+//$be_groupsArray = getBe_groupsArray($db, $dbhost);
 	//	$perms_groupid = $be_groupsArray[$departmentnumber];
 	
-ldapOrganizations($pid, $db, $dbhost, $be_groupsArray, $admin_userid, $site_admin_usergroupid);
+ldapOrganizations($pid, $db, $dbhost, $admin_userid, $site_admin_usergroupid);
 
 ldapTest($pid, $db, $dbhost, $lastmoddate);
+
+updateBeGroupsMountPoints($db, $dbhost);
 
 echo 'ldapimport done';
 
@@ -48,6 +50,16 @@ function getLastModDate($pid, $db, $dbhost)
     $maxdate = $row['maxdate'];
     mysql_close($conn);
     return date("YmdHis\Z", $maxdate-3600);
+}
+
+function updateBeGroupsMountPoints($db, $dbhost)
+{
+    $conn = mysql_connect($dbhost, "fe_user_update", "ibi124Co") or die("35; ".mysql_error());
+    $databas = mysql_select_db($db,$conn);
+    $sql = "UPDATE be_groups B JOIN fe_groups F ON B.tx_institutioner_lucatid = F.tx_institutioner_lucatid JOIN pages P ON F.pid = P.uid 
+    SET B.db_mountpoints = CONCAT(B.db_mountpoints,',',P.uid)
+    WHERE F.tx_institutioner_lucatid !='' AND NOT FIND_IN_SET(P.uid,B.db_mountpoints)";
+    $result = mysql_query($sql) or die("62: ".mysql_error());
 }
 
 function ldapTest($pid, $db, $dbhost, $lastmoddate)
@@ -190,7 +202,7 @@ function ldapTest($pid, $db, $dbhost, $lastmoddate)
 	echo 'ldaptest done';
 }
 
-function ldapOrganizations($pid, $db, $dbhost, $be_groupsArray, $admin_userid, $site_admin_usergroupid) {
+function ldapOrganizations($pid, $db, $dbhost, $admin_userid, $site_admin_usergroupid) {
 	/*$base_dn = "ou=Organizations,dc=lu,dc=se";
 	$ldap_server = "ldap://ldap.lu.se:389";
 	$auth_user = "";
@@ -270,7 +282,7 @@ function ldapOrganizations($pid, $db, $dbhost, $be_groupsArray, $admin_userid, $
 		//if(stristr($dn, "000006000") or stristr($dn, "000007000")) {
 			//print "$pid; $ou; $departmentnumber; $subgroupId; $antal; $db; $dbhost\n";
 			if(!$parentFolderId) $parentFolderId = $pid;
-			folderExist($pid, $ou, $departmentnumber, $parentFolderId, $antal, $db, $dbhost, $be_groupsArray, $admin_userid, $site_admin_usergroupid);
+			folderExist($pid, $ou, $departmentnumber, $parentFolderId, $antal, $db, $dbhost, $admin_userid, $site_admin_usergroupid);
 			
 			$myPid = getPageid($departmentnumber, $db, $dbhost);
 			if(!$myPid) $myPid = $pid;
@@ -290,12 +302,12 @@ function ldapOrganizations($pid, $db, $dbhost, $be_groupsArray, $admin_userid, $
 	//Vad vara detta? Nån skämta med mig aprilo!!!!!!!!!!!!!!!!!!!!!!!!!
 }
 
-function folderExist($pid, $ou, $departmentnumber, $parentId, $antal, $db, $dbhost, $be_groupsArray, $admin_userid, $site_admin_usergroupid)
+function folderExist($pid, $ou, $departmentnumber, $parentId, $antal, $db, $dbhost, $admin_userid, $site_admin_usergroupid)
 {
 	//$be_groupsArray[0] = 5645454554
 	//$myArray[5645454554] = 0
 	
-	if(is_array($be_groupsArray)) $myArray = array_flip($be_groupsArray);
+	//if(is_array($be_groupsArray)) $myArray = array_flip($be_groupsArray);
 	//$perms_groupid = $myArray[$departmentnumber];
 	if(!$perms_groupid) $perms_groupid = "0";
 	//if($antal > 1 and $parentId) $pid = $parentId;
@@ -307,14 +319,14 @@ function folderExist($pid, $ou, $departmentnumber, $parentId, $antal, $db, $dbho
 	$row = mysql_fetch_array($result);
 	if(!$row) {
 		//$ou=str_replace(",", "", $ou);
-		$sql = "INSERT INTO pages(pid, title, perms_userid, perms_groupid, perms_group, perms_user, subtitle, doktype, crdate) VALUES($parentId, '" . cleanChar($ou) . "', $admin_userid, $site_admin_usergroupid, 31, 1, '" . cleanChar($departmentnumber) . "', 254, " . time() . ")";
+		$sql = "INSERT INTO pages(pid, title, perms_userid, perms_groupid, perms_group, perms_user, subtitle, doktype, crdate) VALUES($parentId, '" . cleanChar($ou) . "', $admin_userid, $site_admin_usergroupid, 31, 31, '" . cleanChar($departmentnumber) . "', 254, " . time() . ")";
 		//print $sql.':::';
 		mysql_unbuffered_query($sql) or die('246: ' . mysql_error() . $sql);
 		mysql_close($conn);
 		return "insert";
 	} else {
 		$uid = $row["uid"];
-		$sql = "UPDATE pages SET pid = $parentId, subtitle = '" . cleanChar($departmentnumber) . "', perms_userid = $admin_userid, perms_groupid = $site_admin_usergroupid, perms_user = 31, perms_group = 1 WHERE uid = $uid";
+		$sql = "UPDATE pages SET pid = $parentId, subtitle = '" . cleanChar($departmentnumber) . "', perms_userid = $admin_userid, perms_groupid = $site_admin_usergroupid, perms_user = 31, perms_group = 31 WHERE uid = $uid";
 		//print $sql.':::';
 		mysql_unbuffered_query($sql) or die('253: ' . mysql_error().$sql);
 		mysql_close($conn);
