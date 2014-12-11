@@ -101,7 +101,7 @@ class tx_institutioner_lucatimport extends tx_scheduler_Task {
 
 	    foreach($titleCategoriesArray as $key2 => $value2) {
 		if(strtolower($value2['T_title_sv']) === strtolower($value['title']) or strtolower($value2['T_title_en']) === strtolower($value['title'])) {
-		    //echo '<br /> ' . $value2['T_title_sv'].';'.$value2['T_title_en'] . ';'.$value['title'];
+		    echo '<br /> ' . $value2['T_title_sv'].';'.$value2['T_title_en'] . ';'.$value['title'];
 			$doc['staff_standard_category_facet_sv'] = $value2['C_name_sv'];
 			$doc['staff_standard_category_facet_en'] = $value2['C_name_en'];
 		    /*if($value2['C1_name_sv'] or $value2['C1_name_en']) {
