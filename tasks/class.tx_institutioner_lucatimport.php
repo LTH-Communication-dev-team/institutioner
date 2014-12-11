@@ -84,44 +84,44 @@ class tx_institutioner_lucatimport extends tx_scheduler_Task {
 	    if(is_array($value['group_lucat'])) {
 		foreach ($value['group_lucat'] as $key1 => $value1) {
 		    $doc['group_lucat_id'][] = $value1['id'];
-		    $doc['group_lucat_title'][] = utf8_encode($value1['title']);
+		    $doc['group_lucat_title'][] = $value1['title'];
 		}
 	    } else {
 		$doc['group_lucat_id'] = $value1['id'];
-		$doc['group_lucat_title'] = utf8_encode($value1['title']);
+		$doc['group_lucat_title'] = $value1['title'];
 	    }
 	    $doc['uid'] = $value['uid'];
 	    $doc['pid'] = $value['pid'];
-	    $doc['name'] = utf8_encode($value['name']);
-	    $doc['email'] = utf8_encode($value['email']);
-	    $doc['telephone'] = utf8_encode($value['telephone']);
-	    $doc['first_name'] = utf8_encode($value['first_name']);
-	    $doc['last_name'] = utf8_encode($value['last_name']);        
+	    $doc['name'] = $value['name'];
+	    $doc['email'] = $value['email'];
+	    $doc['telephone'] = $value['telephone'];
+	    $doc['first_name'] = $value['first_name'];
+	    $doc['last_name'] = $value['last_name'];        
 	    //echo $value['title'];
 
 	    foreach($titleCategoriesArray as $key2 => $value2) {
 		if(strtolower($value2['T_title_sv']) === strtolower($value['title']) or strtolower($value2['T_title_en']) === strtolower($value['title'])) {
 		    //echo '<br /> ' . $value2['T_title_sv'].';'.$value2['T_title_en'] . ';'.$value['title'];
-			$doc['staff_standard_category_facet_sv'] = utf8_encode($value2['C_name_sv']);
-			$doc['staff_standard_category_facet_en'] = utf8_encode($value2['C_name_en']);
+			$doc['staff_standard_category_facet_sv'] = $value2['C_name_sv'];
+			$doc['staff_standard_category_facet_en'] = $value2['C_name_en'];
 		    /*if($value2['C1_name_sv'] or $value2['C1_name_en']) {
-			$doc['staff_standard_category_sv'][] = utf8_encode($value2['C1_name_sv']);
-			$doc['staff_standard_category_en'][] = utf8_encode($value2['C1_name_en']);
+			$doc['staff_standard_category_sv'][] = $value2['C1_name_sv']);
+			$doc['staff_standard_category_en'][] = $value2['C1_name_en']);
 		    }*/
 		} else {
-		    $doc['staff_standard_category_facet_sv'] = utf8_encode('Övrig personal');
-		    $doc['staff_standard_category_facet_en'] = utf8_encode('Other Staff');
+		    $doc['staff_standard_category_facet_sv'] = 'Övrig personal'.$value2['T_title_sv'].$value['title'];
+		    $doc['staff_standard_category_facet_en'] = 'Other Staff'.$value2['T_title_en'].$value['title'];
 		}
 	    }
-	    $doc['title'] = utf8_encode($value['title']);
-	    $doc['www'] = utf8_encode($value['www']);
-	    $doc['ou'] = utf8_encode($value['ou']);
-	    $doc['image'] = utf8_encode($value['image']);
-	    $doc['roomnumber'] = utf8_encode($value['roomnumber']);
-	    $doc['registeredaddress'] = utf8_encode($value['registeredaddress']);
-	    $doc['address'] = utf8_encode($value['address']);
-	    $doc['zip'] = utf8_encode($value['zip']);
-	    $doc['street'] = utf8_encode($value['street']);
+	    $doc['title'] = $value['title'];
+	    $doc['www'] = $value['www'];
+	    $doc['ou'] = $value['ou'];
+	    $doc['image'] = $value['image'];
+	    $doc['roomnumber'] = $value['roomnumber'];
+	    $doc['registeredaddress'] = $value['registeredaddress'];
+	    $doc['address'] = $value['address'];
+	    $doc['zip'] = $value['zip'];
+	    $doc['street'] = $value['street'];
 	    $doc['tstamp'] = $value['tstamp'];
 	    $doc['crdate'] = $value['crdate'];
 	    $doc['comments'] = $value['comments'];
