@@ -314,7 +314,7 @@ function listaPersoner($scope,$action,$query,$imageSokvag,$lang,$hide_search,$ht
             
             foreach($facetArray as $cat=>$count) {
                 if($cat) {
-		    $facets .= "<li><input type=\"checkbox\" name=\"staff_" . $categories . "_facet_" . $lang . "_str\" value=\"$cat\" onclick=\"changeFilter('$scope','" . str_replace('_no1','',$action) . "','','$lang','$hide_search','$html_template','$imagefolder','$addpeople','$removepeople','$categories');\" /> " . strip_underscore($cat) . " ($count)</li>";
+		    $facets .= "<li><input type=\"checkbox\" name=\"staff_" . $categories . "_facet_" . $lang . "_str\" value=\"$cat\" onclick=\"changeFilter('$scope','" . str_replace('_no1','',$action) . "','','$lang','$hide_search','$html_template','$imagefolder','$addpeople','$removepeople','$categories');\" /> $cat ($count)</li>";
 		}
             }
             $facets .= '</ul>';
