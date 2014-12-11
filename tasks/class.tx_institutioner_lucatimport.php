@@ -292,9 +292,8 @@ class tx_institutioner_lucatimport extends tx_scheduler_Task {
 	$res = $GLOBALS["TYPO3_DB"]->exec_SELECTquery("C.name_sv AS C_name_sv, C.name_en AS C_name_en, C1.name_sv AS C1_name_sv, C1.name_en AS C1_name_en, T.title_sv AS T_title_sv, T.title_en AS T_title_en", 
             "titles T JOIN categories C ON C.id = T.category LEFT JOIN categories C1 ON C1.id = C.parentId",
             "", "", "") or die("294; ".mysql_error());
-        $row = $GLOBALS["TYPO3_DB"]->sql_fetch_assoc($res);
 	$i=0;
-	while($row = mysql_fetch_array($result)) {
+	while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 	    $C_name_sv = $row['C_name_sv'];
 	    $C_name_en = $row['C_name_en'];
 	    $C1_name_sv = $row['C1_name_sv'];
@@ -329,7 +328,7 @@ class tx_institutioner_lucatimport extends tx_scheduler_Task {
 	$databas = mysql_select_db($db);
 
 		//Läser in fe users
-	$sql = "SELECT GROUP_CONCAT('\"',FG.tx_institutioner_lucatid,'\"') AS group_lucat, FU.uid, FU.pid, FU.username, FU.password, FU.name, FU.email, FU.telephone, 
+	/*$sql = "SELECT GROUP_CONCAT('\"',FG.tx_institutioner_lucatid,'\"') AS group_lucat, FU.uid, FU.pid, FU.username, FU.password, FU.name, FU.email, FU.telephone, 
 		FU.first_name, FU.last_name, FU.title, FU.www, FU.ou, FU.image,
 		FU.roomnumber, FU.registeredaddress, FU.address, FU.zip, FU.street, FROM_UNIXTIME(FU.tstamp) AS tstamp, FROM_UNIXTIME(FU.crdate) AS crdate, FU.comments 
 		FROM fe_users FU JOIN fe_groups FG ON FIND_IN_SET(FG.uid, FU.usergroup)
@@ -338,7 +337,13 @@ class tx_institutioner_lucatimport extends tx_scheduler_Task {
 		ORDER BY name
 		";
 	$result = mysql_query($sql) or die("308: ".mysql_error());
-	while($row = mysql_fetch_array($result)) {
+	while($row = mysql_fetch_array($result)) {*/
+	$res = $GLOBALS["TYPO3_DB"]->exec_SELECTquery("GROUP_CONCAT('\"',FG.tx_institutioner_lucatid,'\"') AS group_lucat, FU.uid, FU.pid, FU.username, FU.password, FU.name, FU.email, FU.telephone, 
+		FU.first_name, FU.last_name, FU.title, FU.www, FU.ou, FU.image,
+		FU.roomnumber, FU.registeredaddress, FU.address, FU.zip, FU.street, FROM_UNIXTIME(FU.tstamp) AS tstamp, FROM_UNIXTIME(FU.crdate) AS crdate, FU.comments", 
+            "fe_users FU JOIN fe_groups FG ON FIND_IN_SET(FG.uid, FU.usergroup)",
+            "FU.tx_institutioner_lth_search = 1 AND FU.deleted = 0", "FU.uid", "name") or die("345; ".mysql_error());
+	while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 	    $username = $row['username'];
 	    $group_lucat = $row['group_lucat'];
 	    $group_lucatArray = explode(',', $group_lucat);
@@ -378,7 +383,7 @@ class tx_institutioner_lucatimport extends tx_scheduler_Task {
 	    $feUserArray[$username]['comments'] = $row['comments'];
 	}
 
-	mysql_close($conn);
+	$GLOBALS["TYPO3_DB"]->sql_free_result($res);
 	echo 'getFeUsers done!';
     }
 
