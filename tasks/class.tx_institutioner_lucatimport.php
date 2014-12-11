@@ -171,7 +171,7 @@ class tx_institutioner_lucatimport extends tx_scheduler_Task {
     {
 	global $feGroupArray;
 	//Database
-	$conn = mysql_connect($dbhost, "fe_user_update", "ibi124Co") or die("45; ".mysql_error());
+	/*$conn = mysql_connect($dbhost, "fe_user_update", "ibi124Co") or die("45; ".mysql_error());
 	$databas = mysql_select_db($db);
 
 	$sql = "SELECT G1.uid AS G1_uid, G1.title AS G1_title, G1.tx_institutioner_lucatid AS G1_tx_institutioner_lucatid, 
@@ -188,8 +188,24 @@ class tx_institutioner_lucatimport extends tx_scheduler_Task {
 	    LEFT JOIN fe_groups G6 ON G6.subgroup = G5.uid 
 	    LEFT JOIN fe_groups G7 ON G7.subgroup = G6.uid 
 	    WHERE G1.deleted=0";
-	$result = mysql_query($sql) or die("51: ".mysql_error());
-	while($row = mysql_fetch_array($result)) {
+	$result = mysql_query($sql) or die("51: ".mysql_error());*/
+	$res = $GLOBALS["TYPO3_DB"]->exec_SELECTquery("G1.uid AS G1_uid, G1.title AS G1_title, G1.tx_institutioner_lucatid AS G1_tx_institutioner_lucatid, 
+	    G2.uid AS G2_uid, G2.title AS G2_title, G2.tx_institutioner_lucatid AS G2_tx_institutioner_lucatid, 
+	    G3.uid AS G3_uid, G3.title AS G3_title, G3.tx_institutioner_lucatid AS G3_tx_institutioner_lucatid, 
+	    G4.uid AS G4_uid, G4.title AS G4_title, G4.tx_institutioner_lucatid AS G4_tx_institutioner_lucatid, 
+	    G5.uid AS G5_uid, G5.title AS G5_title, G5.tx_institutioner_lucatid AS G5_tx_institutioner_lucatid, 
+	    G6.uid AS G6_uid, G6.title AS G6_title, G6.tx_institutioner_lucatid AS G6_tx_institutioner_lucatid, 
+	    G7.uid AS G7_uid, G7.title AS G7_title, G7.tx_institutioner_lucatid AS G7_tx_institutioner_lucatid", 
+	    "fe_groups G1 JOIN fe_groups G2 ON G2.subgroup = G1.uid 
+	    LEFT JOIN fe_groups G3 ON G3.subgroup = G2.uid 
+	    LEFT JOIN fe_groups G4 ON G4.subgroup = G3.uid 
+	    LEFT JOIN fe_groups G5 ON G5.subgroup = G4.uid 
+	    LEFT JOIN fe_groups G6 ON G6.subgroup = G5.uid 
+	    LEFT JOIN fe_groups G7 ON G7.subgroup = G6.uid",
+	    "G1.deleted=0") or die("205; ".mysql_error());
+
+	//while($row = mysql_fetch_array($result)) {
+	while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 	    $G7_tx_institutioner_lucatid = $row['G7_tx_institutioner_lucatid'];
 	    $G6_tx_institutioner_lucatid = $row['G6_tx_institutioner_lucatid'];
 	    $G5_tx_institutioner_lucatid = $row['G5_tx_institutioner_lucatid'];
@@ -258,7 +274,8 @@ class tx_institutioner_lucatimport extends tx_scheduler_Task {
 		$feGroupArray[$G1_tx_institutioner_lucatid]['title'] = $G1_title;
 	    }
 	}
-	mysql_close($conn);
+	//mysql_close($conn);
+	$GLOBALS['TYPO3_DB']->sql_free_result($res);
 	echo 'getFeGroups done!';
     }
 
