@@ -157,7 +157,7 @@ function getSolrData($scope,$action,$query,$imageSokvag,$lang,$hide_search,$html
     if($categories=='custom_category') {
         $sorting = 'staff_custom_category_sort_'.$lang.'_'.$pluginid.'_s' . ' ASC, alphaNameSort ASC';
     } else if($queryfilter and $categories=='standard_category') {
-        $sorting = 'staff_standard_category_' . $lang . ' ASC, alphaNameSort ASC';
+        $sorting = 'staff_standard_category_facet_' . $lang . ' ASC, alphaNameSort ASC';
     } else {
         $sorting = 'alphaNameSort ASC';
     }
