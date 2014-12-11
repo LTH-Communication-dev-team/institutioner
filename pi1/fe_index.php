@@ -266,7 +266,7 @@ function listaPersoner($scope,$action,$query,$imageSokvag,$lang,$hide_search,$ht
         $numberOfHits = $response->response->numFound;
         if ( $response->getHttpStatus() == 200 ) { 
             if ( $numberOfHits > 0 ) {
-                $facetArray = (array)$response->facet_counts->facet_fields->{'staff_'.$categories.'_facet_'.$lang};
+                $facetArray = (array)$response->facet_counts->facet_fields->{'staff_'.$categories.'_facet_'.$lang.'_str'};
                 foreach ( $response->response->docs as $doc ) {
                     
                     // Fill marker array
@@ -314,7 +314,7 @@ function listaPersoner($scope,$action,$query,$imageSokvag,$lang,$hide_search,$ht
             
             foreach($facetArray as $cat=>$count) {
                 if($cat) {
-		    $facets .= "<li><input type=\"checkbox\" name=\"staff_" . $categories . "_facet_" . "$lang\" value=\"$cat\" onclick=\"changeFilter('$scope','" . str_replace('_no1','',$action) . "','','$lang','$hide_search','$html_template','$imagefolder','$addpeople','$removepeople','$categories');\" /> " . strip_underscore($cat) . " ($count)</li>";
+		    $facets .= "<li><input type=\"checkbox\" name=\"staff_" . $categories . "_facet_" . $lang . "_str\" value=\"$cat\" onclick=\"changeFilter('$scope','" . str_replace('_no1','',$action) . "','','$lang','$hide_search','$html_template','$imagefolder','$addpeople','$removepeople','$categories');\" /> " . strip_underscore($cat) . " ($count)</li>";
 		}
             }
             $facets .= '</ul>';
