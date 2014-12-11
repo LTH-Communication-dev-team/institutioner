@@ -222,7 +222,7 @@ function getSolrData($scope,$action,$query,$imageSokvag,$lang,$hide_search,$html
     
     $facetField = null;
     if($categories!='no_categories') {
-	$facetField = array('staff_' . $categories . '_facet_'.$lang);
+	$facetField = array('staff_' . $categories . '_facet_'.$lang.'_str');
     }
 
     $p = array(
