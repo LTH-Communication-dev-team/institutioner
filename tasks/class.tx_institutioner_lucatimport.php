@@ -290,8 +290,8 @@ class tx_institutioner_lucatimport extends tx_scheduler_Task {
 		FROM titles T JOIN categories C ON C.id = T.category LEFT JOIN Categories C1 ON C1.id = C.parentId;";
 	$result = mysql_query($sql) or die("232: ".mysql_error());*/
 	$res = $GLOBALS["TYPO3_DB"]->exec_SELECTquery("C.name_sv AS C_name_sv, C.name_en AS C_name_en, C1.name_sv AS C1_name_sv, C1.name_en AS C1_name_en, T.title_sv AS T_title_sv, T.title_en AS T_title_en", 
-            "titles T JOIN categories C ON C.id = T.category LEFT JOIN Categories C1 ON C1.id = C.parentId",
-            "", "", "") or die("277; ".mysql_error());
+            "titles T JOIN categories C ON C.id = T.category LEFT JOIN categories C1 ON C1.id = C.parentId",
+            "", "", "") or die("294; ".mysql_error());
         $row = $GLOBALS["TYPO3_DB"]->sql_fetch_assoc($res);
 	$i=0;
 	while($row = mysql_fetch_array($result)) {
