@@ -34,6 +34,8 @@ class tx_institutioner_lucatimport extends tx_scheduler_Task {
 	$host = 'www2.lth.se';
 	$port = '8080';
 	$path = '/solr/personal/';
+	
+	tslib_eidtools::connectDB();
 
 	$solr = t3lib_div::makeInstance('tx_solr_ConnectionManager')->getConnection($host, $port, $path, $scheme);
 
@@ -264,12 +266,16 @@ class tx_institutioner_lucatimport extends tx_scheduler_Task {
     {
 	global $titleCategoriesArray;
 
-	$conn = mysql_connect($dbhost, "fe_user_update", "ibi124Co") or die("45; ".mysql_error());
+	/*$conn = mysql_connect($dbhost, "fe_user_update", "ibi124Co") or die("45; ".mysql_error());
 	$databas = mysql_select_db($db);
 
 	$sql = "SELECT C.name_sv AS C_name_sv, C.name_en AS C_name_en, C1.name_sv AS C1_name_sv, C1.name_en AS C1_name_en, T.title_sv AS T_title_sv, T.title_en AS T_title_en 
 		FROM titles T JOIN categories C ON C.id = T.category LEFT JOIN Categories C1 ON C1.id = C.parentId;";
-	$result = mysql_query($sql) or die("232: ".mysql_error());
+	$result = mysql_query($sql) or die("232: ".mysql_error());*/
+	$res = $GLOBALS["TYPO3_DB"]->exec_SELECTquery("C.name_sv AS C_name_sv, C.name_en AS C_name_en, C1.name_sv AS C1_name_sv, C1.name_en AS C1_name_en, T.title_sv AS T_title_sv, T.title_en AS T_title_en", 
+            "titles T JOIN categories C ON C.id = T.category LEFT JOIN Categories C1 ON C1.id = C.parentId",
+            "", "", "") or die("277; ".mysql_error());
+        $row = $GLOBALS["TYPO3_DB"]->sql_fetch_assoc($res);
 	$i=0;
 	while($row = mysql_fetch_array($result)) {
 	    $C_name_sv = $row['C_name_sv'];
@@ -288,7 +294,8 @@ class tx_institutioner_lucatimport extends tx_scheduler_Task {
 	    $i++;
 	}
 
-	mysql_close($conn);
+	//mysql_close($conn);
+	$GLOBALS["TYPO3_DB"]->sql_free_result($res);
 	echo 'getTitleCategories done!';
     }
 

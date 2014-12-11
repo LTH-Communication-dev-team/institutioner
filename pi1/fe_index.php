@@ -432,7 +432,7 @@ function editForm($scope,$action,$lang,$imagefolder,$pluginid,$issiteadmin)
 
 	</fieldset>
     </form>";
-    
+    $GLOBALS["TYPO3_DB"]->sql_free_result($res);
     $returnArray['content'] = $content;
     return $returnArray;
 }
