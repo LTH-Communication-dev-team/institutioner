@@ -24,22 +24,24 @@ class user_sampleflex_addFieldsToFlexForm {
         $test = $xml->data->sheet[0]->language;
         foreach ($test->field as $n) {
             foreach($n->attributes() as $name => $val) {
-                if ($val == 'customcategories') {
+		if ($val == 'customcategories') {
                     $customcategories = $n->value;
                 } else if($val == 'scope') {
                     $scope = $n->value;
                 } else if($val == 'addpeople') {
                     $addpeople = $n->value;
                 } else if($val == 'removepeople') {
-                    $addpeople = $n->value;
+                    $removepeople = $n->value;
                 }
             }
         }
-        
-	if($scope) {
+
+	if(trim($scope) != '') {
 	    $scope = str_replace(' ', '', $scope);
 	    $scope = str_replace(',', "\n", $scope);
 	    $scopeArray = explode("\n", $scope);
+	} else if(trim($addpeople)) {
+	    //
 	} else {
 	    return 'You have to save a selection of departments/people!';
 	}
@@ -80,15 +82,17 @@ class user_sampleflex_addFieldsToFlexForm {
             $content = 'Solr service not responding.';
             exit;
         }
-
-	$i = 0;
-        foreach($scopeArray as $key => $value) {
-	    if($queries or i==0) {
-		$queries = "group_lucat_id:$value";
-	    } else {
-		$queries .= " $value";
+	
+	if($scopeArray) {
+	    $i = 0;
+	    foreach($scopeArray as $key => $value) {
+		if($queries or i==0) {
+		    $queries = "group_lucat_id:$value";
+		} else {
+		    $queries .= " $value";
+		}
+		$i++;
 	    }
-	    $i++;
 	}
         
         if(trim($addpeople)) {
@@ -115,7 +119,7 @@ class user_sampleflex_addFieldsToFlexForm {
             'sort' => 'alphaNameSort ASC'
         );
 
-        $response = $solr->search( $queries, $offset, $limit, $p );
+	$response = $solr->search( $queries, $offset, $limit, $p );
         $numberOfHits = $response->response->numFound;
         $content .= "<tr>$myscope<td colspan=\"" . (count($customcategoriesArray) + 1) . "\">$numberOfHits</td></tr>";
         if ( $response->getHttpStatus() == 200 ) { 

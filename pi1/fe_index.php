@@ -185,7 +185,7 @@ function getSolrData($scope,$action,$query,$imageSokvag,$lang,$hide_search,$html
     if(trim($addpeople)) {
         $addpeople = str_replace(' ', '', $addpeople);
         $addpeople = str_replace(':', '', $addpeople);
-        $addpeopleArray = explode(',',$addpeople);
+        $addpeopleArray = explode(",",$addpeople);
         foreach($addpeopleArray as $value) {
             $queries .= " id:$value";
         }
@@ -194,7 +194,7 @@ function getSolrData($scope,$action,$query,$imageSokvag,$lang,$hide_search,$html
     if(trim($removepeople)) {
         $removepeople = str_replace(' ', '', $removepeople);
         $removepeople = str_replace(':', '', $removepeople);
-        $removepeopleArray = explode(',',$removepeople);
+        $removepeopleArray = explode(",",$removepeople);
         foreach($removepeopleArray as $value) {
             $queries .= " !id:$value";
         }
