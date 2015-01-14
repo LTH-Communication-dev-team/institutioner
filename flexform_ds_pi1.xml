@@ -202,7 +202,7 @@
          </el>
      </ROOT>
 </sDEF>
-<myDef>
+<addCustomCategories>
     <ROOT>
          <TCEforms>
           <sheetTitle>Define Custom Categories</sheetTitle>
@@ -219,6 +219,64 @@
           </dynField>
         </el>
     </ROOT>
-</myDef>
+</addCustomCategories>
+
+<addCustomImages>
+    <ROOT>
+         <TCEforms>
+          <sheetTitle>Define Custom Images</sheetTitle>
+         </TCEforms>
+        <el>
+            <dynField>
+            <TCEforms>
+                <label>myLabel</label>
+                <config>
+                 <type>user</type>
+                  <userFunc>user_sampleflex_addFieldsToFlexForm->addCustomImages</userFunc>
+                </config>
+             </TCEforms>
+          </dynField>
+          
+        </el>
+    </ROOT>
+</addCustomImages>
+
+<addCustomTexts>
+    <ROOT>
+         <TCEforms>
+          <sheetTitle>Define Custom Texts</sheetTitle>
+         </TCEforms>
+        <el>
+            <dynField>
+            <TCEforms>
+                <label>myLabel</label>
+                <config>
+                 <type>user</type>
+                  <userFunc>user_sampleflex_addFieldsToFlexForm->addCustomTexts</userFunc>
+                </config>
+             </TCEforms>
+          </dynField>
+        </el>
+    </ROOT>
+</addCustomTexts>
+
+<manageCategories>
+    <ROOT>
+         <TCEforms>
+          <sheetTitle>Manage Categories</sheetTitle>
+         </TCEforms>
+        <el>
+            <dynField>
+            <TCEforms>
+                <config>
+                 <type>user</type>
+                  <userFunc>user_sampleflex_addFieldsToFlexForm->manageCategories</userFunc>
+                </config>
+             </TCEforms>
+          </dynField>
+        </el>
+    </ROOT>
+</manageCategories>
+
 </sheets>
 </T3DataStructure>

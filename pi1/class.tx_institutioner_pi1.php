@@ -120,12 +120,8 @@ class tx_institutioner_pi1 extends tslib_pibase {
         //*****************************Status bar ends*********************************************************
 
         $content .= "<div id=\"txtContent\" class=\"tx_institutioner_maincontentdiv\">";
-        $content .= "</div>";
+        $content .= "</div><div><a href=\"/om-lth/updatemyprofile/\">Update content</a></div>";
         
-        $content .= "<div id=\"txtLoginform\" class=\"tx_institutioner_loginformdiv\">";
-        $content .= $this->loginForm();
-        $content .= "<p><a href=\"#\" onclick=\"showHideLoginform(); return false;\">Back</a></p>";
-        $content .= "</div>";
         
 	if($GLOBALS['BE_USER']) {
 	    $beUsergroupArray = explode(',',$GLOBALS["BE_USER"]->user["usergroup"]);

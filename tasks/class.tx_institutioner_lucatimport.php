@@ -4,7 +4,6 @@ ini_set('memory_limit', '-1');
 error_reporting(E_ERROR | E_WARNING | E_PARSE);
 set_time_limit(0);
 
-//require_once(__DIR__ . '/vendor/solr/Service.php');
 //Tx_Solr_Scheduler_IndexQueueWorkerTask
 class tx_institutioner_lucatimport extends tx_scheduler_Task {
 	var $feGroupArray = array();
@@ -96,7 +95,8 @@ class tx_institutioner_lucatimport extends tx_scheduler_Task {
 	    $doc['email'] = $value['email'];
 	    $doc['telephone'] = $value['telephone'];
 	    $doc['first_name'] = $value['first_name'];
-	    $doc['last_name'] = $value['last_name'];        
+	    $doc['last_name'] = $value['last_name'];
+	    $doc['full_name'] = $value['first_name'] . ' ' . $value['last_name'];
 	    //echo $value['title'];
 	    
 	    $doc['staff_standard_category_facet_sv_str'] = 'Övrig personal';

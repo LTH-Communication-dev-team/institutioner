@@ -6,7 +6,7 @@ if (!defined ('PATH_typo3conf')) die ('Could not access this script directly!');
 if (t3lib_extMgm::isLoaded('fpdf'))    {
     require(t3lib_extMgm::extPath('fpdf').'class.tx_fpdf.php');
 }
-require_once(__DIR__ . '/../vendor/solr/Service.php');
+//require_once(__DIR__ . '/../vendor/solr/Service.php');
 $id = isset($HTTP_GET_VARS['id'])?$HTTP_GET_VARS['id']:0;
 
 initTSFE($id);
@@ -152,6 +152,8 @@ function getSolrData($scope,$action,$query,$imageSokvag,$lang,$hide_search,$html
     } else {
         $lang = 'sv';
     }
+    
+    $lang = str_replace('se','sv',$lang);
 
     //Sorting
     if($categories=='custom_category') {
@@ -163,7 +165,14 @@ function getSolrData($scope,$action,$query,$imageSokvag,$lang,$hide_search,$html
     }
     //$solr = new Apache_Solr_Service( 'www2.lth.se', '8080', '/solr/personal' );
     
-    $solr = new Apache_Solr_Service( $confArr['solrServer'], $confArr['solrPort'], $confArr['solrPath'] );
+    //$solr = new Apache_Solr_Service( $confArr['solrServer'], $confArr['solrPort'], $confArr['solrPath'] );
+    $scheme = 'http';
+	
+    if($storage) {
+	$pid = $storage;
+    }
+
+    $solr = t3lib_div::makeInstance('tx_solr_ConnectionManager')->getConnection($confArr['solrServer'], $confArr['solrPort'], $confArr['solrPath'], $scheme);
 
     if ( ! $solr->ping() ) {
         $content = 'Solr service not responding.';
@@ -187,7 +196,10 @@ function getSolrData($scope,$action,$query,$imageSokvag,$lang,$hide_search,$html
         $addpeople = str_replace(':', '', $addpeople);
         $addpeopleArray = explode(",",$addpeople);
         foreach($addpeopleArray as $value) {
-            $queries .= " id:$value";
+	    if($queries) {
+		$queries .= ' ';
+	    }
+            $queries .= "id:$value";
         }
     }
 
@@ -209,20 +221,21 @@ function getSolrData($scope,$action,$query,$imageSokvag,$lang,$hide_search,$html
         $queryfilterArray = json_decode(html_entity_decode($queryfilter));
         //$queryfilterArray = explode(',',urldecode($queryfilter));
         foreach($queryfilterArray as $key=>$value) {
-
             if($value!='null') {
                 $queryfiltertmpArray = explode('.',$value);
                 if($queryFilterString) {
                     $queryFilterString .= ' OR ';
                 }
-                $queryFilterString .= "$queryfiltertmpArray[0]:" . $queryfiltertmpArray[1];
+                $queryFilterString .= $queryfiltertmpArray[0] . ':' . '"' . $queryfiltertmpArray[1] . '"';
             }
         }
     }
     
     $facetField = null;
-    if($categories!='no_categories') {
+    if($categories=='standard_category') {
 	$facetField = array('staff_' . $categories . '_facet_'.$lang.'_str');
+    } else if($categories=='custom_category') {
+	$facetField = array('staff_' . $categories . '_facet_'.$lang.'_'.$pluginid.'_ss');
     }
 
     $p = array(
@@ -232,7 +245,6 @@ function getSolrData($scope,$action,$query,$imageSokvag,$lang,$hide_search,$html
         'facet.field' => $facetField,
         'facet.mincount' => 1
     );
-
     $response = $solr->search( htmlspecialchars($queries), $offset, $limit, $p );
 
     return $response;
@@ -249,7 +261,7 @@ function listaPersoner($scope,$action,$query,$imageSokvag,$lang,$hide_search,$ht
     
     $lang = str_replace('se','sv',$lang);
 
-    if($scope or $query) {
+    if($scope or $query or $addpeople) {
         $fe_user = $GLOBALS['TSFE']->fe_user->user;
         
         $response = getSolrData($scope,$action,$query,$imageSokvag,$lang,$hide_search,$html_template,$imagefolder,$addpeople,$removepeople,$categories,$queryfilter,$pluginid);
@@ -262,13 +274,14 @@ function listaPersoner($scope,$action,$query,$imageSokvag,$lang,$hide_search,$ht
         // Extract subparts from the template
         $subpart = $cObj->getSubpart($templateHtml, '###TEMPLATE###');
         $markerArray = array();
-        
-        $numberOfHits = $response->response->numFound;
+
+	$numberOfHits = $response->response->numFound;
         if ( $response->getHttpStatus() == 200 ) { 
             if ( $numberOfHits > 0 ) {
-                $facetArray = (array)$response->facet_counts->facet_fields->{'staff_'.$categories.'_facet_'.$lang.'_str'};
+                $facetArray = (array)$response->facet_counts->facet_fields->{'staff_'.$categories.'_facet_'.$lang.'_'.$pluginid.'_ss'};
+		
                 foreach ( $response->response->docs as $doc ) {
-                    
+                    $markerArray['###COMMENTS###']='';
                     // Fill marker array
                     $markerArray['###NAME###'] = "$doc->first_name $doc->last_name";
                     $markerArray['###FIRST_NAME###'] = $doc->first_name;
@@ -277,16 +290,24 @@ function listaPersoner($scope,$action,$query,$imageSokvag,$lang,$hide_search,$ht
                     $markerArray['###TELEPHONE###'] = $doc->telephone;
                     $markerArray['###EMAIL###'] = $doc->email;
                     $markerArray['###SUBJECT###'] = $doc->ou;
-                    if($doc->image) {
+		    
+                    if($doc->{'staff_custom_image_'.$pluginid.'_s'}) {
+			$markerArray['###IMAGE###'] = $doc->{'staff_custom_image_'.$pluginid.'_s'};
+		    } else if($doc->image) {
 			$markerArray['###IMAGE###'] = $imagefolder . $doc->image;
 		    } else {
 			$markerArray['###IMAGE###'] = '/typo3conf/ext/institutioner/graphics/placeholder.gif';
 		    }
                     $markerArray['###WWW###'] = $doc->www;
                     $markerArray['###WWWLABEL###'] = $doc->wwwlabel;
-                    $markerArray['###DESCRIPTION###'] = $doc->{'description_'.$pluginid.'_'.$lang.'_s'};
+		    
+		    if($doc->{'staff_custom_text_'.$pluginid.'_s'}) {
+			$markerArray['###COMMENTS###'] = $doc->{'staff_custom_text_'.$pluginid.'_s'};
+		    } else if($doc->comments) {
+			$markerArray['###COMMENTS###'] = $doc->comments;
+		    }
+		    
 		    $markerArray['###WWWLABEL###'] = $doc->wwwlabel;
-		    $markerArray['###COMMENTS###'] = $doc->comments;
                     
                     $edit = '';
                     /*if($fe_user['username']===$doc->id) {
@@ -314,7 +335,9 @@ function listaPersoner($scope,$action,$query,$imageSokvag,$lang,$hide_search,$ht
             
             foreach($facetArray as $cat=>$count) {
                 if($cat) {
-		    $facets .= "<li><input type=\"checkbox\" name=\"staff_" . $categories . "_facet_" . $lang . "_str\" value=\"$cat\" onclick=\"changeFilter('$scope','" . str_replace('_no1','',$action) . "','','$lang','$hide_search','$html_template','$imagefolder','$addpeople','$removepeople','$categories');\" /> $cat ($count)</li>";
+		    $catArray = explode('_',$cat);
+		    $catDisplay = str_replace('+',' ', $catArray[1]);
+		    $facets .= "<li><input type=\"checkbox\" name=\"staff_" . $categories . "_facet_" . $lang . "_".$pluginid."_ss\" value=\"$cat\" onclick=\"changeFilter('$scope','" . str_replace('_no1','',$action) . "','','$lang','$hide_search','$html_template','$imagefolder','$addpeople','$removepeople','$categories');\" /> $catDisplay ($count)</li>";
 		}
             }
             $facets .= '</ul>';
@@ -356,6 +379,7 @@ function listaPersoner($scope,$action,$query,$imageSokvag,$lang,$hide_search,$ht
     }
         
     $returnArray['facets'] = $facets;
+
     $returnArray['content'] = $content;
     $returnArray['searchbox'] = $searchbox;
     $returnArray['export'] = $export;
@@ -439,6 +463,20 @@ function editForm($scope,$action,$lang,$imagefolder,$pluginid,$issiteadmin)
 
 function saveEditForm($action,$query)
 {
+    $confArr = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['institutioner']);
+    
+    if (!$confArr['solrServer']) {
+	return 'Ange Solr-server';
+    }
+    
+    if (!$confArr['solrPort']) {
+	return 'Ange Solr-port';
+    }
+    
+    if (!$confArr['solrPath']) {
+	return 'Ange Solr-path';
+    }
+    
     $username = addslashes($GLOBALS['TSFE']->fe_user->user['username']);
     $content = '';
     $query = str_replace('&quot;','"',$query);
@@ -478,8 +516,12 @@ function saveEditForm($action,$query)
     }
     
     //Solr
-    require_once(__DIR__ . '/../vendor/solr/Service.php');
-    $solr = new Apache_Solr_Service( 'www2.lth.se', '8080', '/solr/personal' );
+    //require_once(__DIR__ . '/../vendor/solr/Service.php');
+    //$solr = new Apache_Solr_Service( 'www2.lth.se', '8080', '/solr/personal' );
+    $scheme = 'http';
+
+    $solr = t3lib_div::makeInstance('tx_solr_ConnectionManager')->getConnection($confArr['solrServer'], $confArr['solrPort'], $confArr['solrPath'], $scheme);
+
     $query = "id:$username";
     $results = false;
     $limit = 1;
