@@ -32,7 +32,7 @@ class tx_institutioner_lucatimport extends tx_scheduler_Task {
 	$scheme = 'http';
 	$host = 'www2.lth.se';
 	$port = '8080';
-	$path = '/solr/personal/';
+	$path = '/solr/kronos/';
 	
 	tslib_eidtools::connectDB();
 
