@@ -20,13 +20,6 @@ $TYPO3_CONF_VARS['FE']['eID_include']['tx_institutioner_pi1_ajax'] = 'EXT:ajax_l
 $TYPO3_CONF_VARS['BE']['AJAX']['institutioner::ajaxControl'] = t3lib_extMgm::extPath('institutioner').'mod1/ajax.php:institutioner->ajaxControl';
 //$TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][] = t3lib_extMgm::extPath($_EXTKEY).'/class.tx_sampleflex_addFieldsToFlexForm:user_sampleflex_addFieldsToFlexForm';
 
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['tx_institutioner_lucatimport'] = array(
-	'extension'        => $_EXTKEY,
-	'title'            => 'Lucat Import',
-	'description'      => '',
-	'additionalFields' => '',
-);
-
 
 t3lib_extMgm::addPItoST43($_EXTKEY,'pi2/class.tx_institutioner_pi2.php','_pi2','list_type',1);
 ?>
